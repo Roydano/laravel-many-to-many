@@ -71,7 +71,7 @@ class PostController extends Controller
         $newPost->save( );
 
         if(isset($data['tag'])){
-            $newPost->tags()->attach(['tag']);
+            $newPost->tags()->attach($data['tag']);
         }
 
         return redirect( )->route('admin.posts.index')->with('create', 'Hai creato un nuovo post!');
@@ -101,8 +101,9 @@ class PostController extends Controller
     {
         $post = Post::find($id);
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.edit', compact('post', 'categories'));
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -137,6 +138,10 @@ class PostController extends Controller
 
         $post->update($data);
 
+        if(array_key_exists('tag', $data)){
+            $post->tags()->sync($data['tag']);
+        }
+
         return redirect()->route('admin.posts.index')->with('edit', 'Il post numero ' . $post->id . ' è stato modificato con successo!');
     }
 
@@ -149,6 +154,7 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         $post->delete();
+        $post->tags()->detach();
 
         return redirect()->route('admin.posts.index')->with('delete', 'Il post numero ' . $post->id . ' è stato cancellato');
     }
