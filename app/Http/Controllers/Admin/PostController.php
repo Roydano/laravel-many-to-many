@@ -70,6 +70,10 @@ class PostController extends Controller
 
         $newPost->save( );
 
+        if(isset($data['tag'])){
+            $newPost->tags()->attach(['tag']);
+        }
+
         return redirect( )->route('admin.posts.index')->with('create', 'Hai creato un nuovo post!');
 
     }
