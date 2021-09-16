@@ -35,7 +35,18 @@
             <div class="alert alert-danger">{{ $message }}</div>
             @enderror
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+
+        <h4 class="mt-5">Tags</h4>
+        @foreach($tags as $tag)
+        <div class="form-check d-inline-block my-1 mx-2">
+            <input class="form-check-input" type="checkbox" value="{{ $tag->id }}" id="{{ $tag->id }}" name="tag[]">
+            <label class="form-check-label" for="{{ $tag->id }}">
+                {{ $tag->name }}
+            </label>
+        </div>
+        @endforeach
+
+        <button type="submit" class="btn btn-primary d-block mt-5">Submit</button>
     </form>
 </div>
 
